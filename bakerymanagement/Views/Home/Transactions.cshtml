@@ -1,0 +1,152 @@
+﻿@model bakerymanagement.Models.TransactionsViewModel
+
+@{
+    ViewData["Title"] = "Transactions and Leaderboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="text-center">Transactions</h1>
+
+<div class="transactions-section">
+    <table class="styled-table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>User</th>
+                <th>Product</th>
+                <th>Quantity Changed</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Transactions != null && Model.Transactions.Any())
+            {
+                @foreach (var transaction in Model.Transactions)
+                {
+                    <tr>
+                        <td>@transaction.TransactionDate.ToString("yyyy-MM-dd HH:mm")</td>
+                        <td>@transaction.User.UserName</td>
+                        <td>@transaction.Product.ProductName</td>
+                        <td>@transaction.QuantityChanged</td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="4" class="text-center">No transactions available.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<h2 class="text-center">Leaderboard</h2>
+
+<div class="leaderboard-section">
+    <table class="styled-table">
+        <thead>
+            <tr>
+                <th>User</th>
+                <th>Total Added</th>
+                <th>Total Removed</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Leaderboard != null && Model.Leaderboard.Any())
+            {
+                @foreach (var user in Model.Leaderboard)
+                {
+                    <tr>
+                        <td>@user.UserName</td>
+                        <td>@user.TotalAdded</td>
+                        <td>@user.TotalRemoved</td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="3" class="text-center">No leaderboard data available.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div class="button-group">
+    <button onclick="location.href='@Url.Action("Index", "Home")'">Back to Inventory</button>
+</div>
+
+<!-- Add the Reset for the Day button -->
+<div class="reset-button">
+    <form method="post" asp-action="ResetInventory" onsubmit="return confirm('Are you sure you want to reset the inventory for the day? This action cannot be undone.');">
+        <button type="submit">Reset for the Day</button>
+    </form>
+</div>
+
+@section Styles {
+    <style>
+        .transactions-section, .leaderboard-section {
+            width: 90%;
+            margin: 20px auto;
+        }
+
+        .styled-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+            .styled-table thead tr {
+                background-color: #009879;
+                color: #ffffff;
+                text-align: left;
+            }
+
+            .styled-table th, .styled-table td {
+                padding: 12px 15px;
+                border: 1px solid #ddd;
+            }
+
+            .styled-table tbody tr:nth-child(even) {
+                background-color: #f3f3f3;
+            }
+
+            .styled-table tbody tr:hover {
+                background-color: #f1f1f1;
+            }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .button-group {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+            .button-group button {
+                padding: 10px 20px;
+                margin: 5px;
+            }
+
+        .reset-button {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+            .reset-button button {
+                background-color: #ff4d4d;
+                color: #fff;
+                padding: 12px 25px;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                font-size: 16px;
+            }
+
+                .reset-button button:hover {
+                    background-color: #e60000;
+                }
+    </style>
+}
